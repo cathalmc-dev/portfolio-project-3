@@ -11,10 +11,16 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 
-store = GSPREAD_CLIENT.open('dundrum')
+def identify_user():
+    store = input("Enter your store name: ").lower()
+    workbook = GSPREAD_CLIENT.open(store)
+    user = input("Enter your user name: ").lower()
+    sheet = workbook.worksheet(user)
+    data = sheet.get_all_values()
+    print(data)
 
-user = store.worksheet('eric')
+def main():
+    identify_user()
 
-data = user.get_all_values()
-
-print(data)
+print("Welcome to Mobile Commission Tracker")
+main()
